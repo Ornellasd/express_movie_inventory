@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const movies = [
+let movies = [
   {
     title: "Apocalypse Now",
     description: "In Vietnam in 1970, Captain Willard (Martin Sheen) takes a perilous and increasingly hallucinatory journey upriver to find and terminate Colonel Kurtz (Marlon Brando), a once-promising officer who has reportedly gone completely mad. In the company of a Navy patrol boat filled with street-smart kids, a surfing-obsessed Air Cavalry officer (Robert Duvall), and a crazed freelance photographer (Dennis Hopper), Willard travels further and further into the heart of darkness.",
@@ -16,10 +16,9 @@ const movies = [
     price: 3.50,
     stock: 45,    
   },
-
-
 ]
 
+let genres = ['Fantasy', 'Science Fiction', 'Fiction'];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -27,18 +26,20 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/new_movie', function(req, res, next) {
-  res.render('movie_form', { title: 'Add Movie'});
+  res.render('movie_form', { title: 'Add Movie', genres: genres});
 })
 
 router.post('/new_movie', function(req, res, next) {
   movies.push({
     title: req.body.movieTitle,
     description: req.body.movieDesc,
-    genres: req.body.movieGenres,
+    genres: req.body.movieGenre,
     price: req.body.moviePrice,
     stock: req.body.movieStock,
+    genres: req.body.movieGenre,
   });
 
+  console.log(movies);
   res.redirect('/');
 })
 

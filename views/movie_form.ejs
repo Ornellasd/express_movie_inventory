@@ -2,6 +2,7 @@
 <html>
   <%- include('partials/head.ejs') %>
   <body>
+   
     <div class="container">
       <h2 class="text-center mt-2"><%= title %></h2>
       <div class="card shadow p-3 mb-3">
@@ -13,11 +14,7 @@
         </div>
         <div class="form-group">
           <label for="movieDesc">Description:</label>
-          <input class="form-control" type="text" id="movieDesc" name="movieDesc" required="true" value="">
-        </div>
-        <div class="form-group">
-          <label for="movieGenres">Genres:</label>
-          <input class="form-control" type="text" id="movieGenres" name="movieGenres" required="true" value="">
+          <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true" value=""></textarea>
         </div>
         <div class="form-group">
           <label for="moviePrice">Price:</label>
@@ -27,6 +24,21 @@
           <label for="movieStock">Stock:</label>
           <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="">
         </div>
+
+        <!-- Genre Loop -->
+        <div class=form-group><label>Genre:</label>
+          <div>
+            <% for(let genre in genres) { %>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input name="movieGenre" type="checkbox" class="form-check-input" value=""><%= genres[genre] %>
+              </label>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <!-- -->
+
         <button type="submit" class="btn btn-success">Submit</button>
       </form>  
       </div> 
