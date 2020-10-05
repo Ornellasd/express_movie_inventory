@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+  <%- include('partials/head.ejs') %>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <ul style="list-style-type: none">
+    <% for(let movie in movies) { %>
+      <li>Name: <%= movies[movie].title %></li>
+      <li>Description: <%= movies[movie].description %></li>
+      <li>Price: <%= movies[movie].price %></li>
+      <li>Qty: <%= movies[movie].stock %></li>
+      <hr />
+    <% } %>
+    <a href="/new_movie" class="btn btn-primary">Add Movie</a>
+    </ul>
   </body>
 </html>

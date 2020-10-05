@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head.ejs') %>
+  <body>
+    <div class="container">
+      <h2 class="text-center mt-2"><%= title %></h2>
+      <div class="card shadow p-3 mb-3">
+
+      <form method="POST" action="/new_movie">
+        <div class="form-group">
+          <label for="movieTitle">Title:</label>
+          <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="">
+        </div>
+        <div class="form-group">
+          <label for="movieDesc">Description:</label>
+          <input class="form-control" type="text" id="movieDesc" name="movieDesc" required="true" value="">
+        </div>
+        <div class="form-group">
+          <label for="movieGenres">Genres:</label>
+          <input class="form-control" type="text" id="movieGenres" name="movieGenres" required="true" value="">
+        </div>
+        <div class="form-group">
+          <label for="moviePrice">Price:</label>
+          <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="">
+        </div>
+        <div class="form-group">
+          <label for="movieStock">Stock:</label>
+          <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>  
+      </div> 
+    </div>
+  </body>
+
+</html>
+
