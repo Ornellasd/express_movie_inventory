@@ -1,10 +1,4 @@
-const express = require('express');
-const router = express.Router();
-
-const movie_controller = require('../controllers/movieController');
-
 const Movie = require('../models/movie');
-
 
 let movies = [
   {
@@ -23,38 +17,6 @@ let movies = [
   },
 ]
 
-let genres = ['Fantasy', 'Science Fiction', 'Fiction'];
-
-/* GET home page. */
-router.get('/', movie_controller.index);
-
-router.get('/new_movie', function(req, res, next) {
-  res.render('movie_form', { title: 'Add Movie', genres: genres});
-})
-
-router.post('/new_movie', function(req, res, next) {
-  movies.push({
-    title: req.body.movieTitle,
-    description: req.body.movieDesc,
-    genres: req.body.movieGenre,
-    price: req.body.moviePrice,
-    stock: req.body.movieStock,
-  });
-
-  const movie = new Movie({
-    title: req.body.movieTitle,
-    description: req.body.movieDesc,
-    price: req.body.moviePrice,
-    stock: req.body.movieStock, 
-  });
-
-  movie.save(function(err) {
-    if(err){
-      console.log(err);
-    };
-  });
-
-  res.redirect('/');
-})
-
-module.exports = router;
+exports.index = function(req, res) {
+  res.render('index', { title: 'DankFlix', movies: movies });
+} 
