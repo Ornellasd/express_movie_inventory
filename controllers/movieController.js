@@ -1,3 +1,5 @@
+const async = require('async');
+
 const Movie = require('../models/movie');
 
 let movies = [
@@ -17,6 +19,62 @@ let movies = [
   },
 ]
 
+let genres = ['Fantasy', 'Science Fiction', 'Fiction', 'Documentary'];
+
+
 exports.index = function(req, res) {
   res.render('index', { title: 'DankFlix', movies: movies });
-} 
+};
+
+exports.movie_create_get = function(req, res, next) {
+  res.render('movie_form', { title: 'Add Movie', genres: genres});
+}
+
+exports.movie_create_post = function(req, res) {
+  movies.push({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    genres: req.body.movieGenre,
+    price: req.body.moviePrice,
+    stock: req.body.movieStock,
+  });
+
+  const movie = new Movie({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    price: req.body.moviePrice,
+    stock: req.body.movieStock, 
+  });
+
+  movie.save();
+  res.redirect('/');
+};
+
+
+
+/*
+exports.movie_create_post = function(req, res) {
+  movies.push({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    genres: req.body.movieGenre,
+    price: req.body.moviePrice,
+    stock: req.body.movieStock,
+  });
+
+  const movie = new Movie({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    price: req.body.moviePrice,
+    stock: req.body.movieStock, 
+  });
+
+  movie.save(function(err) {
+    if(err){
+      console.log(err);
+    };
+  });
+
+  res.redirect('/');
+}
+*/
