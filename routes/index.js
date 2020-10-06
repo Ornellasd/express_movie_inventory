@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+const Movie = require('../models/movie');
+
+
 let movies = [
   {
     title: "Apocalypse Now",
@@ -36,10 +39,21 @@ router.post('/new_movie', function(req, res, next) {
     genres: req.body.movieGenre,
     price: req.body.moviePrice,
     stock: req.body.movieStock,
-    genres: req.body.movieGenre,
   });
 
-  console.log(movies);
+  const movie = new Movie({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    price: req.body.moviePrice,
+    stock: req.body.movieStock, 
+  });
+
+  movie.save(function(err) {
+    if(err){
+      console.log(err);
+    };
+  });
+
   res.redirect('/');
 })
 
