@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html>
   <%- include('partials/head.ejs') %>
+
   <body>
     <div class="container">
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
-      <ul style="list-style-type: none">
-      <% for(let movie in movies) { %>
-        <li>Name: <%= movies[movie].title %></li>
-        <li>Description: <%= movies[movie].description %></li>
-        <li>Price: <%= movies[movie].price %></li>
-        <li>Qty: <%= movies[movie].stock %></li>
-        <hr />
-      <% } %>
-      <a href="/new_movie" class="btn btn-primary">Add Movie</a>
-      </ul>
+      <h1 class="text-center"><%= title %></h1>
+      <p class="text-center">Welcome to <%= title %></p>
+      <div class="card-deck row row-cols-1 row-cols-lg-3">
+        <% for(let movie in movies) { %>
+        <div class="col mb-4">
+          <div class="card">
+            <img src="/images/no_image.jpg" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title"><%= movies[movie].title %></h5>
+              <p class="card-text"><%= movies[movie].description %></p>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                </div>
+                $<%= movies[movie].price %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <a href="/new_movie" class="btn btn-primary mt-2">Add Movie</a>
     </div>
   </body>
+
 </html>
