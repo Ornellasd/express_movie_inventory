@@ -2,6 +2,7 @@
 <html>
   <%- include('partials/head.ejs') %>
 <body>
+  <%- include('partials/navbar.ejs') %>
   <div class="container">
     <h1 class="text-center"><%= title %></h1>
     <div class="card mb-3">
@@ -17,7 +18,7 @@
             <a href="" class="btn btn-sm btn-outline-secondary">Delete</a>
             <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
           </div>
-          Qty: <%= stock %> | $<%= cost %>
+          Qty: <%= stock %> | <%= cost %>
         </div>
       </div>
     </div>

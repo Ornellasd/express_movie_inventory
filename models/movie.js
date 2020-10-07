@@ -18,4 +18,12 @@ MovieSchema
 .get(function() {
   return '/movie/' + this._id;
 });
+
+// Virtual for formatted movie price
+MovieSchema
+.virtual('cost_formatted')
+.get(function() {
+  return '$' + this.cost;
+})
+
 module.exports = mongoose.model('Movie', MovieSchema);

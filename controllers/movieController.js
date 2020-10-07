@@ -41,7 +41,7 @@ exports.movie_detail = function(req, res) {
       res.render('movie_detail', { 
         title: movie.title,
         description: movie.description,
-        cost: movie.cost,
+        cost: movie.cost_formatted,
         stock: movie.stock, 
       });
     }
