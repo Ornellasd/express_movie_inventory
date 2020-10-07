@@ -33,7 +33,12 @@ exports.movie_create_post = function(req, res) {
   res.redirect('/');
 };
 
+exports.movie_detail = function(req, res) {
+  res.send('Movie Detail Page');
+}
+
 /*
+  ---- Expand save function? ------
   movie.save(function(err) {
     if(err){
       console.log(err);

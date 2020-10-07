@@ -12,4 +12,10 @@ const MovieSchema = new Schema(
   }
 );
 
+// Virtual for movie's URL
+MovieSchema
+.virtual('url')
+.get(function() {
+  return '/movie/' + this._id;
+});
 module.exports = mongoose.model('Movie', MovieSchema);

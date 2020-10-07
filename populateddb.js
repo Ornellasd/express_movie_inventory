@@ -43,34 +43,34 @@ function movieCreate(title, description, cost, stock, cb) {
 }
 
 function createMovies(cb) {
-    async.parallel([
-        function(callback) {
-          movieCreate('Test Movie 1', 'Summary of test movie 1', 420, 69, callback);
-        },
-        function(callback) {
-          movieCreate('Test Movie 2', 'Summary of test movie 2', 3.50, 17, callback)
-        }
-        ],
-        // optional callback
-        cb);
+  async.parallel([
+    function(callback) {
+      movieCreate('Test Movie 1', 'Summary of test movie 1', 420, 69, callback);
+    },
+    function(callback) {
+      movieCreate('Test Movie 2', 'Summary of test movie 2', 3.50, 17, callback)
+    }
+    ],
+    // optional callback
+    cb);
 }
 
 
 
 async.series([
-    createMovies,
+  createMovies,
 ],
 // Optional callback
 function(err, results) {
-    if (err) {
-        console.log('FINAL ERR: '+err);
-    }
-    else {
-        //console.log('BOOKInstances: '+bookinstances);
-        
-    }
-    // All done, disconnect from database
-    mongoose.connection.close();
+  if (err) {
+      console.log('FINAL ERR: '+err);
+  }
+  else {
+      //console.log('BOOKInstances: '+bookinstances);
+      
+  }
+  // All done, disconnect from database
+  mongoose.connection.close();
 });
 
 
