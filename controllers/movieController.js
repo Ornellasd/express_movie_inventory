@@ -13,7 +13,6 @@ exports.index = function(req, res) {
         title: 'DankFlix',
         movies: list_movies
       });
-      console.log(list_movies);
     });
 };
 
@@ -34,14 +33,34 @@ exports.movie_create_post = function(req, res) {
 };
 
 exports.movie_detail = function(req, res) {
-  res.send('Movie Detail Page');
-}
+  Movie.findById(req.params.id, function (err, movie) {
+    console.log(movie.title);
+    if(err) {
+      return err;
+    } else {
+      res.render('movie_detail', { 
+        title: movie.title,
+        description: movie.description,
+        cost: movie.cost,
+        stock: movie.stock, 
+      });
+    }
+  });
+
+  
+};  
 
 /*
-  ---- Expand save function? ------
+  ---- Expand save function? ----
   movie.save(function(err) {
     if(err){
       console.log(err);
     };
   });
+
+  ---- Why use exec? ----
+  Movie.findById(req.params.id)
+    .exec(function(err) {
+      res.render('movie_detail', { title: 'MOVIE WHAT WHAT'});
+    })
 */
