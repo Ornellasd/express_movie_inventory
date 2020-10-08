@@ -2,11 +2,10 @@
 <html>
   <%- include('partials/head.ejs') %>
   <body>
-   
+    <%- include('partials/navbar.ejs') %>
     <div class="container">
       <h2 class="text-center mt-2"><%= title %></h2>
-      <div class="card shadow p-3 mb-3">
-
+      <div class="card box-shadow p-3 mb-3">
       <form method="POST" action="">
         <div class="form-group">
           <label for="movieTitle">Title:</label>
@@ -24,7 +23,6 @@
           <label for="movieStock">Stock:</label>
           <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="">
         </div>
-
         <!-- Genre Loop -->
         <div class=form-group><label>Genre:</label>
           <div>
@@ -38,12 +36,10 @@
           </div>
         </div>
         <!-- -->
-
         <button type="submit" class="btn btn-success">Submit</button>
       </form>  
       </div> 
     </div>
   </body>
-
 </html>
 
