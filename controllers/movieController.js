@@ -74,9 +74,6 @@ exports.movie_edit_get = function(req, res) {
   Movie.findById(req.params.id).
   exec(function(err, movie) {
     if(err) return err;
-
-    console.log(movie);
-
     res.render('movie_form', { 
       title: 'Edit Movie',
       movie: movie,
@@ -94,9 +91,9 @@ exports.movie_edit_post = function(req, res) {
     _id: req.params.id, 
   });
 
-  Movie.findByIdAndUpdate(req.params.id, { title: 'Edit Post Test' }, function(err, movie) {
+  Movie.findByIdAndUpdate(req.params.id, movie, {}, function(err, movie) {
     if (err) return err;
-    res.redirect('/');
+    res.redirect(movie.url);
   });
 };
 
