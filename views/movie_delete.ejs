@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head.ejs') %>
+  <body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container text-center">
+      <h1><%= title %></h1>
+      <p>Do you really want to delete this movie</p>
+      <form method="POST" action="">
+        <div class="form-group">
+          <input type="hidden">
+        </div>
+        <button class="btn btn-primary" type="submit">Delete</button>
+      </form>
+    </div>
+  </body>
+</html>

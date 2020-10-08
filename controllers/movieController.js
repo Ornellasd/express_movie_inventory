@@ -34,7 +34,6 @@ exports.movie_create_post = function(req, res) {
 
 exports.movie_detail = function(req, res) {
   Movie.findById(req.params.id, function (err, movie) {
-    console.log(movie.title);
     if(err) {
       return err;
     } else {
@@ -42,13 +41,38 @@ exports.movie_detail = function(req, res) {
         title: movie.title,
         description: movie.description,
         cost: movie.cost_formatted,
-        stock: movie.stock, 
+        stock: movie.stock,
+        url: movie.url 
       });
     }
   });
-
-  
 };  
+
+exports.movie_delete_get = function(req, res) {
+  Movie.findById(req.params.id, function (err, movie) {
+    if(err) {
+      return err;
+    } else {
+      res.render('movie_delete', {
+        title: `Delete ${movie.title}?`,
+      });
+    }
+  });
+};
+
+exports.movie_delete_post = function(req, res) {
+  Movie.findByIdAndRemove(req.params.id, function (err, movie) {
+    if (err) {
+      return err;
+    } else {
+      res.redirect('/');
+    }
+  });
+}
+
+exports.movie_edit_get = function(req, res) {
+  res.send('Edit Movie Page');
+};
 
 /*
   ---- Expand save function? ----
