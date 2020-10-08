@@ -71,7 +71,33 @@ exports.movie_delete_post = function(req, res) {
 }
 
 exports.movie_edit_get = function(req, res) {
-  res.send('Edit Movie Page');
+  Movie.findById(req.params.id).
+  exec(function(err, movie) {
+    if(err) return err;
+
+    console.log(movie);
+
+    res.render('movie_form', { 
+      title: 'Edit Movie',
+      movie: movie,
+      genres: testGenres
+    });
+  });
+};
+
+exports.movie_edit_post = function(req, res) {
+  const movie = new Movie({
+    title: req.body.movieTitle,
+    description: req.body.movieDesc,
+    cost: req.body.moviePrice,
+    stock: req.body.movieStock,
+    _id: req.params.id, 
+  });
+
+  Movie.findByIdAndUpdate(req.params.id, { title: 'Edit Post Test' }, function(err, movie) {
+    if (err) return err;
+    res.redirect('/');
+  });
 };
 
 /*

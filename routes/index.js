@@ -26,7 +26,7 @@ router.post('/movie/:id/delete', movie_controller.movie_delete_post);
 router.get('/movie/:id/edit', movie_controller.movie_edit_get);
 
 // POST request to edit a Movie.
-//router.get('/movie/:id/edit', movie_controller.movie_edit_post);
+router.post('/movie/:id/edit', movie_controller.movie_edit_post);
 
 // POST request to edit a Movie.
 module.exports = router;

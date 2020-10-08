@@ -9,19 +9,21 @@
       <form method="POST" action="">
         <div class="form-group">
           <label for="movieTitle">Title:</label>
-          <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="">
+          <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.title: '' %>">
         </div>
         <div class="form-group">
           <label for="movieDesc">Description:</label>
-          <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true" value=""></textarea>
+          <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true">
+            <%= typeof(movie) == 'object' && movie ? movie.description: '' %>
+          </textarea>
         </div>
         <div class="form-group">
           <label for="moviePrice">Price:</label>
-          <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="">
+          <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.cost: '' %>">
         </div>
         <div class="form-group">
           <label for="movieStock">Stock:</label>
-          <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="">
+          <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.stock: '' %>">
         </div>
         <!-- Genre Loop -->
         <div class=form-group><label>Genre:</label>
