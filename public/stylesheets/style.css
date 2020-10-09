@@ -1,5 +1,5 @@
 body {
-  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #F0F2F5;
 }
 
@@ -7,13 +7,17 @@ a {
   color: #00B7FF;
 }
 
+#description {
+  text-align: justify;
+}
+/* Bootstrap Styling */
+
+/*
+
 :root {
   --jumbotron-padding-y: 3rem;
 }
 
-/* Bootstrap Styling */
-
-/*
 .jumbotron {
   padding-top: var(--jumbotron-padding-y);
   padding-bottom: var(--jumbotron-padding-y);
