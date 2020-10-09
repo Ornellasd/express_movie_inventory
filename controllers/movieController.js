@@ -6,6 +6,7 @@ let testGenres = ['Fantasy', 'Science Fiction', 'Fiction', 'Documentary'];
 exports.index = function(req, res) {
   Movie.find({}, 'title description cost stock')
     .exec(function(err, list_movies) {
+      console.log(list_movies);
       if(err) {
         return next(err);
       }
