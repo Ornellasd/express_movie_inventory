@@ -25,15 +25,15 @@
         </div>
         <!-- Genre Loop -->
         <div class=form-group><label>Genre:</label>
-          <div>
+
+            <select class="form-control">
+              <option></option>
             <% genres.forEach((genre) => { %>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input name="movieGenre" type="checkbox" class="form-check-input" value=""><%= genre.name %>
-              </label>
-            </div>
+              <option><%= genre.name %>
             <% }) %>
-          </div>
+            </select>
+      
+
         </div>
         <!-- -->
         <button type="submit" class="btn btn-success">Submit</button>
