@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const movie_controller = require('../controllers/movieController');
-const genre_controller = require('../controllers/genreController');
+const movie_genre_controller = require('../controllers/genreController');
 
 // GET Movie Index Page
 router.get('/', movie_controller.index);
@@ -29,7 +29,12 @@ router.get('/movie/:id/edit', movie_controller.movie_edit_get);
 router.post('/movie/:id/edit', movie_controller.movie_edit_post);
 
 // GET Genre list page
-router.get('/genres', genre_controller.genre_list);
+router.get('/genres', movie_genre_controller.genre_list);
+
+// GET Genre detail
+router.get('/genre/:id', function(req, res) {
+  res.send('Genre Detail');
+});
 
 // POST request to edit a Movie.
 module.exports = router;

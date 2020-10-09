@@ -1,4 +1,5 @@
 const Movie = require('../models/movie');
+const Genre = require('../models/genre');
 
 let testGenres = ['Fantasy', 'Science Fiction', 'Fiction', 'Documentary'];
 
@@ -11,14 +12,22 @@ exports.index = function(req, res) {
       }
       res.render('index', {
         title: 'DankFlix',
-        movies: list_movies
+        movies: list_movies,
+        genres: testGenres
       });
 
     });
 };
 
 exports.movie_create_get = function(req, res, next) {
-  res.render('movie_form', { title: 'Add Movie', genres: testGenres});
+  Genre.find({}, 'name')
+    .exec(function(err, genre) {
+      if(err) return err;
+      res.render('movie_form', {
+        title: 'Add Movie',
+        genres: genre
+      });
+    });
 }
 
 exports.movie_create_post = function(req, res) {
@@ -27,6 +36,7 @@ exports.movie_create_post = function(req, res) {
     description: req.body.movieDesc,
     cost: req.body.moviePrice,
     stock: req.body.movieStock, 
+    //genre: 
   });
 
   movie.save();

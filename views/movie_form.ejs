@@ -26,13 +26,13 @@
         <!-- Genre Loop -->
         <div class=form-group><label>Genre:</label>
           <div>
-            <% for(let genre in genres) { %>
+            <% genres.forEach((genre) => { %>
             <div class="form-check-inline">
               <label class="form-check-label">
-                <input name="movieGenre" type="checkbox" class="form-check-input" value=""><%= genres[genre] %>
+                <input name="movieGenre" type="checkbox" class="form-check-input" value=""><%= genre.name %>
               </label>
             </div>
-            <% } %>
+            <% }) %>
           </div>
         </div>
         <!-- -->

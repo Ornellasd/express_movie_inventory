@@ -1,12 +1,6 @@
 const Genre = require('../models/genre');
 
 exports.genre_list = function(req, res) {
-  const genre = new Genre({
-    name: 'test'
-  })
-
-  genre.save();
-
   Genre.find({}, 'name')
     .exec(function(err, list_genres) {
       if(err) return err;
