@@ -31,10 +31,8 @@ router.post('/movie/:id/edit', movie_controller.movie_edit_post);
 // GET Genre list page
 router.get('/genres', movie_genre_controller.genre_list);
 
-// GET Genre detail
-router.get('/genre/:id', function(req, res) {
-  res.send('Genre Detail');
-});
+// Get Genre detail
+router.get('/genre/:id', movie_genre_controller.genre_detail);
 
 // POST request to edit a Movie.
 module.exports = router;
