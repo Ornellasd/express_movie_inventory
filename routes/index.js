@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const movie_controller = require('../controllers/movieController');
-const Movie = require('../models/movie');
+const genre_controller = require('../controllers/genreController');
 
 // GET Movie Index Page
 router.get('/', movie_controller.index);
@@ -27,6 +27,9 @@ router.get('/movie/:id/edit', movie_controller.movie_edit_get);
 
 // POST request to edit a Movie.
 router.post('/movie/:id/edit', movie_controller.movie_edit_post);
+
+// GET Genre list page
+router.get('/genres', genre_controller.genre_list);
 
 // POST request to edit a Movie.
 module.exports = router;

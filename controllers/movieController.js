@@ -1,4 +1,3 @@
-const async = require('async');
 const Movie = require('../models/movie');
 
 let testGenres = ['Fantasy', 'Science Fiction', 'Fiction', 'Documentary'];
