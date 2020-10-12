@@ -6,7 +6,7 @@
     <h1><%= title %></h1>
     <ul>
     	<% movies.forEach((movie) => { %>
-    	<li><%= movie.title %></li>
+    	<li><a href=" <%= movie.url %>"><%= movie.title %></a></li>
     	<% }) %>
     </ul>
     <%- include('partials/footer.ejs') %>

@@ -4,6 +4,7 @@ const async = require('async');
 
 exports.index = function(req, res) {
   Movie.find({}, 'title description cost stock genre')
+    .populate('genre')
     .exec(function(err, list_movies) {
       if(err) return next(err);
       res.render('index', {
