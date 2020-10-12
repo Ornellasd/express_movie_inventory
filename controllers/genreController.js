@@ -13,6 +13,7 @@ exports.genre_list = function(req, res) {
 
 exports.genre_detail = function(req, res) {
   Genre.findById(req.params.id, function(err, genre) {
+    console.log(genre);
     if(err) { return err };
     res.render('genre_detail', {
       title: genre.name,

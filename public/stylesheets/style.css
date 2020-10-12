@@ -7,9 +7,14 @@ a {
   color: #00B7FF;
 }
 
+label{
+  font-weight: 700!important;
+}
+
 #description {
   text-align: justify;
 }
+
 /* Bootstrap Styling */
 
 /*
