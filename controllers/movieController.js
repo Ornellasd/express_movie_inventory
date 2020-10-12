@@ -5,15 +5,11 @@ const async = require('async');
 exports.index = function(req, res) {
   Movie.find({}, 'title description cost stock genre')
     .exec(function(err, list_movies) {
-    
-      if(err) {
-        return next(err);
-      }
+      if(err) return next(err);
       res.render('index', {
         title: 'DankFlix',
         movies: list_movies,
       });
-
     });
 };
 
@@ -23,10 +19,7 @@ exports.movie_create_get = function(req, res, next) {
       Genre.find(callback);
     },
   }, function(err, results) {
-    if (err) {
-      return next(err);
-    }
-    console.log(results.genres);
+    if (err)return next(err);    
     res.render('movie_form', {
       title: 'Add Movie',
       genres: results.genres,
@@ -57,18 +50,25 @@ exports.movie_create_post = function(req, res) {
 };
 
 exports.movie_detail = function(req, res) {
-  Movie.findById(req.params.id, function (err, movie) {
-    if(err) {
+  async.parallel({
+    movie: function(callback) {
+      Movie.findById(req.params.id)
+        .populate('genre')
+        .exec(callback);
+    },
+   
+  }, function(err, results) {
+    if (err) return next(err);
+    if (results.movie == null) { // No results.
+      var err = new Error('Book not found');
+      err.status = 404;
       return err;
-    } else {
-      res.render('movie_detail', { 
-        title: movie.title,
-        description: movie.description,
-        cost: movie.cost_formatted,
-        stock: movie.stock,
-        url: movie.url 
-      });
     }
+    // Successful, so render.
+    res.render('movie_detail', {
+      title: results.movie.title,
+      movie: results.movie
+    });
   });
 };  
 
@@ -96,7 +96,6 @@ exports.movie_delete_post = function(req, res) {
 
 exports.movie_edit_get = function(req, res) {
   let existingGenres = [];
-  console.log(Genre.find());
   Genre.find({}, 'name', function(err, genres) {
     if(err) return err;
     existingGenres = genres;

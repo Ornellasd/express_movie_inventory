@@ -8,19 +8,20 @@
         <div class="container">
           <div class="row d-flex justify-content-center">
              <div class="col-md-8">
-              <h3 class="text-center"><%= title %></h3>
+              <h3 class="text-center"><%= movie.title %></h3>
               <div class="card mb-4 box-shadow">
                 <img class="card-img-top" src="/images/no_image.jpg" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text" id="description"><%= description %></p>
+                  <h5><%= movie.genre %></h5>
+                  <p class="card-text" id="description"><%= movie.description %></p>
                 </div>
                 <div class="card-footer">
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="<%= url %>/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
-                      <a href="<%= url %>/delete" class="btn btn-sm btn-outline-secondary">Delete</a>
+                      <a href="<%= movie.url %>/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
+                      <a href="<%= movie.url %>/delete" class="btn btn-sm btn-outline-secondary">Delete</a>
                     </div>
-                    Qty: <%= stock %> | <%= cost %>
+                    Qty: <%= movie.stock %> | <%= movie.cost %>
                   </div>
                 </div>
               </div>
