@@ -12,7 +12,7 @@
               <div class="card mb-4 box-shadow">
                 <img class="card-img-top" src="/images/no_image.jpg" alt="Card image cap">
                 <div class="card-body">
-                  <h5><%= movie.genre %></h5>
+                  <a href="<%= '/genre/' + movie.genre._id %>"><%= movie.genre.name %></a>
                   <p class="card-text" id="description"><%= movie.description %></p>
                 </div>
                 <div class="card-footer">

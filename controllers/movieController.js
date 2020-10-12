@@ -64,6 +64,7 @@ exports.movie_detail = function(req, res) {
       err.status = 404;
       return err;
     }
+    console.log(results.movie.genre.name)
     // Successful, so render.
     res.render('movie_detail', {
       title: results.movie.title,
