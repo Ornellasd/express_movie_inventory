@@ -28,7 +28,7 @@
           <select type="select" class="form-control" name="selectedGenre">
             <option selected>Choose</option>
           <% genres.forEach((genre) => { %>
-            <option><%= genre.name %>
+            <option value="<%= genre._id %>"><%= genre.name %>
           <% }) %>
           </select>
         </div>

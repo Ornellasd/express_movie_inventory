@@ -2,8 +2,6 @@ const Movie = require('../models/movie');
 const Genre = require('../models/genre');
 const async = require('async');
 
-let testGenres = ['Fantasy', 'Science Fiction', 'Fiction', 'Documentary'];
-
 exports.index = function(req, res) {
   Movie.find({}, 'title description cost stock genre')
     .exec(function(err, list_movies) {
@@ -28,7 +26,7 @@ exports.movie_create_get = function(req, res, next) {
     if (err) {
       return next(err);
     }
-
+    console.log(results.genres);
     res.render('movie_form', {
       title: 'Add Movie',
       genres: results.genres,
@@ -41,17 +39,7 @@ exports.movie_create_post = function(req, res) {
   //if(req.body.otherGenre.length > 0) {
   //  genreSelection = req.body.otherGenre;
   //}
-  /*
- if (!(req.body.Other instanceof Array)) {
-    if (typeof req.body.otherGenre === 'undefined')
-      req.body.otherGenre = [];
-    else
-      req.body.otherGenre = new Array(req.body.genre);
-  }
-  */
-  //req.body.otherGenre = new Array(req.body.otherGenre);
-  console.log(req.body.selectedGenre);
-
+  
   const movie = new Movie({
     title: req.body.movieTitle,
     description: req.body.movieDesc,
