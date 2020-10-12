@@ -25,7 +25,7 @@
         </div>
         <!-- Genre Loop -->
         <div class=form-group><label>Genre:</label>
-          <select class="form-control">
+          <select type="select" class="form-control" name="selectedGenre">
             <option selected>Choose</option>
           <% genres.forEach((genre) => { %>
             <option><%= genre.name %>
@@ -34,7 +34,7 @@
         </div>
         <p class=pl-3>or</p>
         <div class="form-group">
-          <label for="moviePrice">Add Genre:</label>
+          <label for="moviePrice">Add New Genre:</label>
           <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
         </div>
         </div>
