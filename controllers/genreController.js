@@ -1,4 +1,7 @@
 const Genre = require('../models/genre');
+const Movie = require('../models/movie');
+
+const async = require('async');
 
 exports.genre_list = function(req, res) {
   Genre.find({}, 'name')
@@ -12,10 +15,28 @@ exports.genre_list = function(req, res) {
 };
 
 exports.genre_detail = function(req, res) {
-  Genre.findById(req.params.id, function(err, genre) {
-    if(err) { return err };
+ async.parallel({
+    genre: function(callback) {
+      Genre.findById(req.params.id)
+        .exec(callback)
+    },
+    genre_movies: function(callback) {
+      Movie.find({'genre': req.params.id }, 'title').exec(callback);
+
+    }
+  }, function(err, results) {
+    if (err) {
+      return next(err);
+    } // Error in API usage.
+    if (results.genre == null) { // No results.
+      var err = new Error('Author not found');
+      err.status = 404;
+      return next(err);
+    }
+    // Successful, so render.
     res.render('genre_detail', {
-      title: genre.name,
+      title: results.genre.name,
+      movies: results.genre_movies,
     });
   });
-}
+};

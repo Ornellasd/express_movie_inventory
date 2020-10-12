@@ -4,6 +4,11 @@
   <body>
     <%- include('partials/navbar.ejs') %>
     <h1><%= title %></h1>
+    <ul>
+    	<% movies.forEach((movie) => { %>
+    	<li><%= movie.title %></li>
+    	<% }) %>
+    </ul>
     <%- include('partials/footer.ejs') %>
   </body>
 </html>

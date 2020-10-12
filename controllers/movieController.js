@@ -64,7 +64,6 @@ exports.movie_detail = function(req, res) {
       err.status = 404;
       return err;
     }
-    console.log(results.movie.genre.name)
     // Successful, so render.
     res.render('movie_detail', {
       title: results.movie.title,
@@ -124,27 +123,9 @@ exports.movie_edit_post = function(req, res) {
     _id: req.params.id, 
   });
 
-  
-  //var genre = new Genre({ name: req.body.otherGenre });
-  //genre.save();
-
   Movie.findByIdAndUpdate(req.params.id, movie, {}, function(err, movie) {
     if (err) return err;
     res.redirect(movie.url);
   });
 };
 
-/*
-  ---- Expand save function? ----
-  movie.save(function(err) {
-    if(err){
-      console.log(err);
-    };
-  });
-
-  ---- Why use exec? ----
-  Movie.findById(req.params.id)
-    .exec(function(err) {
-      res.render('movie_detail', { title: 'MOVIE WHAT WHAT'});
-    })
-*/
