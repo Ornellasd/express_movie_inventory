@@ -8,7 +8,7 @@ exports.index = function(req, res) {
     .exec(function(err, list_movies) {
       if(err) return next(err);
       res.render('index', {
-        title: 'DankFlix',
+        title: 'All Movies',
         movies: list_movies,
       });
     });
@@ -112,14 +112,14 @@ exports.movie_edit_get = function(req, res) {
 
 
   Movie.findById(req.params.id).
-  exec(function(err, movie) {
-    if(err) return err;
-    res.render('movie_form', { 
-      title: 'Edit Movie',
-      movie: movie,
-      genres: existingGenres
+    exec(function(err, movie) {
+      if(err) return err;
+      res.render('movie_form', { 
+        title: 'Edit Movie',
+        movie: movie,
+        genres: existingGenres
+      });
     });
-  });
 };
 
 exports.movie_edit_post = function(req, res) {

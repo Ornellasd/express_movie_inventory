@@ -21,7 +21,7 @@ exports.genre_detail = function(req, res) {
         .exec(callback)
     },
     genre_movies: function(callback) {
-      Movie.find({'genre': req.params.id }, 'title').exec(callback);
+      Movie.find({'genre': req.params.id }, 'title description cost stock genre').exec(callback);
 
     }
   }, function(err, results) {
@@ -34,7 +34,7 @@ exports.genre_detail = function(req, res) {
       return next(err);
     }
     // Successful, so render.
-    res.render('genre_detail', {
+    res.render('index', {
       title: results.genre.name,
       movies: results.genre_movies,
     });

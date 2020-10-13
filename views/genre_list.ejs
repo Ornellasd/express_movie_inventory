@@ -3,11 +3,17 @@
   <%- include('partials/head.ejs') %>
   <body>
     <%- include('partials/navbar.ejs') %>
-    <ul>
-    <% genres.forEach((genre) => { %>
-      <li><a href="<%= genre.url %>"><%= genre.name %></a></li>
-    <% }) %>
-    </ul>
+    <div class="container">
+      <% genres.forEach((genre) => { %>
+      <a href="<%= genre.url %>">
+        <div class="card mb-2">
+          <div class="card-body">
+            <%= genre.name %>
+          </div>
+        </div>
+      </a>
+      <% }) %>
+    </div>
     <%- include('partials/footer.ejs') %>
   </body>
 </html>
