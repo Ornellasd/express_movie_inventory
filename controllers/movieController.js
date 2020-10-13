@@ -28,18 +28,27 @@ exports.movie_create_get = function(req, res, next) {
   });
 }
 
+
 exports.movie_create_post = function(req, res) {
-  //let genreSelection;
-  //if(req.body.otherGenre.length > 0) {
-  //  genreSelection = req.body.otherGenre;
-  //}
+  let genreSelection;
+ 
+  // See if new genre was entered on movie_form
+  // Look through guide to create and save genre at same time, genre.create()?
+
+  if(req.body.otherGenre.length > 0) {
+    const genre = new Genre ({ name: req.body.otherGenre });
+    genreSelection = genre._id;
+    genre.save();
+  } else {
+    genreSelection = req.body.selectedGenre;
+  }
   
   const movie = new Movie({
     title: req.body.movieTitle,
     description: req.body.movieDesc,
     cost: req.body.moviePrice,
     stock: req.body.movieStock, 
-    genre: req.body.selectedGenre
+    genre: genreSelection
   });
 
   movie.save(function(err) {
@@ -49,7 +58,6 @@ exports.movie_create_post = function(req, res) {
 
   
 };
-
 exports.movie_detail = function(req, res) {
   async.parallel({
     movie: function(callback) {

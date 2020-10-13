@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-console.log('This script populates some test movies, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb+srv://cooluser:coolpassword@cluster0-mbdj7.mongodb.net/local_library?retryWrites=true');
+console.log('This script populates some test movies, and genres to your database. Specified database as argument - e.g.: populatedb mongodb+srv://cooluser:coolpassword@cluster0-mbdj7.mongodb.net/local_library?retryWrites=true');
 
 // Get arguments passed on command line
 var userArgs = process.argv.slice(2);
@@ -12,6 +12,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 */
 var async = require('async')
 var Movie = require('./models/movie')
+var Genre = require('./models/genre')
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
