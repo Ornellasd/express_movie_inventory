@@ -8,10 +8,10 @@
         <div class="container">
           <h3 class="text-center"><%= title %></h3>
           <div class="row">
-            <% movies.forEach((movie) => {%>
+            <% movies.forEach((movie) => { %>
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="images/no_image.jpg" alt="Card image cap">                
+                <img class="card-img-top" src="/images/no_image.jpg" alt="Card image cap">                
                 <div class="card-body">
                   <h5 class="card-title"><%= movie.title %></h5>
                   <a href="<%= movie.genre.url %>"><%= movie.genre.name %></a>
@@ -29,7 +29,6 @@
             </div>
             <% }) %>
           </div>
-
         </div>
       </div>
     </main>
