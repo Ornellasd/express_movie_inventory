@@ -26,9 +26,9 @@
           </div>
           <div class=form-group><label>Genre:</label>
             <select type="select" class="form-control" id="selectedGenre" name="selectedGenre">
-              <option>Choose</option>
+              <!--<option>Choose</option> -->
+              <option value="" selected disabled hidden>Choose</option>
               <% genres.forEach((genre) => { %>
-                <% movie.genre %>
                 <% if(movie.genre.toString() == genre._id.toString()) { %>
                   <option selected value="<%= genre._id %>"><%= genre.name %></option>
                   <% } else { %>
