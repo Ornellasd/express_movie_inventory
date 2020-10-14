@@ -58,6 +58,7 @@ exports.movie_create_post = function(req, res) {
 
   
 };
+
 exports.movie_detail = function(req, res) {
   async.parallel({
     movie: function(callback) {
@@ -83,28 +84,22 @@ exports.movie_detail = function(req, res) {
 
 exports.movie_delete_get = function(req, res) {
   Movie.findById(req.params.id, function (err, movie) {
-    if(err) {
-      return err;
-    } else {
-      res.render('movie_delete', {
-        title: `Delete ${movie.title}?`,
-      });
-    }
+    if(err) return err;
+    res.render('movie_delete', {
+      title: `Delete ${movie.title}?`,
+    });
   });
 };
 
 exports.movie_delete_post = function(req, res) {
   Movie.findByIdAndRemove(req.params.id, function (err, movie) {
-    if (err) {
-      return err;
-    } else {
-      res.redirect('/');
-    }
+    if(err) return err;
+    res.redirect('/');
   });
 }
 
 exports.movie_edit_get = function(req, res) {
-  let existingGenres = [];
+  
   Genre.find({}, 'name', function(err, genres) {
     if(err) return err;
     existingGenres = genres;
@@ -114,6 +109,11 @@ exports.movie_edit_get = function(req, res) {
   Movie.findById(req.params.id).
     exec(function(err, movie) {
       if(err) return err;
+      //console.log(movie.genre) + ' == ' ;
+      existingGenres.forEach((genre) => {
+        console.log(genre._id.toString() == movie.genre.toString());
+      });
+
       res.render('movie_form', { 
         title: 'Edit Movie',
         movie: movie,

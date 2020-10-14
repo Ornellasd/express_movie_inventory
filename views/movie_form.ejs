@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html>
   <%- include('partials/head.ejs') %>
+
   <body>
     <%- include('partials/navbar.ejs') %>
     <div class="container">
       <h2 class="text-center mt-2"><%= title %></h2>
       <div class="card box-shadow p-3 mb-3">
-      <form method="POST" action="">
-        <div class="form-group">
-          <label for="movieTitle" class="font-weight-bold">Title:</label>
-          <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.title: '' %>">
-        </div>
-        <div class="form-group">
-          <label for="movieDesc">Description:</label>
-          <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true" rows="3"><%= typeof(movie) == 'object' && movie ? movie.description: '' %></textarea>
-        </div>
-        <div class="form-group">
-          <label for="moviePrice">Price:</label>
-          <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.cost: '' %>">
-        </div>
-        <div class="form-group">
-          <label for="movieStock">Stock:</label>
-          <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.stock: '' %>">
-        </div>
-        <!-- Genre Loop -->
-        <div class=form-group><label>Genre:</label>
-          <select type="select" class="form-control" name="selectedGenre">
-            <option selected>Choose</option>
-          <% genres.forEach((genre) => { %>
-            <option value="<%= genre._id %>"><%= genre.name %>
-          <% }) %>
-          </select>
-        </div>
-        <p class=pl-3>or</p>
-        <div class="form-group">
-          <label for="moviePrice">Add New Genre:</label>
-          <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
-        </div>
-        </div>
-        <!-- -->
-        <button type="submit" class="btn btn-success">Submit</button>
-      </form>  
-      </div> 
+        <form method="POST" action="">
+          <div class="form-group">
+            <label for="movieTitle" class="font-weight-bold">Title:</label>
+            <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.title: '' %>">
+          </div>
+          <div class="form-group">
+            <label for="movieDesc">Description:</label>
+            <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true" rows="3"><%= typeof(movie) == 'object' && movie ? movie.description: '' %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="moviePrice">Price:</label>
+            <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.cost: '' %>">
+          </div>
+          <div class="form-group">
+            <label for="movieStock">Stock:</label>
+            <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.stock: '' %>">
+          </div>
+          <div class=form-group><label>Genre:</label>
+            <select type="select" class="form-control" id="selectedGenre" name="selectedGenre">
+              <option>Choose</option>
+              <% genres.forEach((genre) => { %>
+                <% movie.genre %>
+                <% if(movie.genre.toString() == genre._id.toString()) { %>
+                  <option selected value="<%= genre._id %>"><%= genre.name %></option>
+                  <% } else { %>
+                  <option value="<%= genre._id %>"><%= genre.name %></option>
+                <% } %>
+              <% }) %>
+            </select>
+          </div>
+          <p class=pl-3>or</p>
+          <div class="form-group">
+            <label for="moviePrice">Add New Genre:</label>
+            <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div>
     </div>
     <%- include('partials/footer.ejs') %>
   </body>
-</html>
 
+</html>
