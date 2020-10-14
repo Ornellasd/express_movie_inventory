@@ -4,6 +4,7 @@
 
   <body>
     <%- include('partials/navbar.ejs') %>
+
     <div class="container">
       <h2 class="text-center mt-2"><%= title %></h2>
       <div class="card box-shadow p-3 mb-3">
@@ -38,9 +39,9 @@
               <option value="Other">Other</option>
             </select>
           </div>
-          <p class=pl-3>or</p>
-          <div class="form-group">
-            <label for="moviePrice">Add New Genre:</label>
+          <!-- <p class=pl-3>or</p> -->
+          <div class="form-group" id="addNewGenre">
+            <label for="addNewGenre">Add New Genre:</label>
             <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
           </div>
           <button type="submit" class="btn btn-success">Submit</button>
@@ -48,6 +49,6 @@
       </div>
     </div>
     <%- include('partials/footer.ejs') %>
+    <script src="/javascripts/frontend_scripts.js"></script>
   </body>
-
 </html>
