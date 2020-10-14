@@ -99,21 +99,14 @@ exports.movie_delete_post = function(req, res) {
 }
 
 exports.movie_edit_get = function(req, res) {
-  
   Genre.find({}, 'name', function(err, genres) {
     if(err) return err;
     existingGenres = genres;
   });
 
-
   Movie.findById(req.params.id).
     exec(function(err, movie) {
       if(err) return err;
-      //console.log(movie.genre) + ' == ' ;
-      existingGenres.forEach((genre) => {
-        console.log(genre._id.toString() == movie.genre.toString());
-      });
-
       res.render('movie_form', { 
         title: 'Edit Movie',
         movie: movie,

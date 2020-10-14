@@ -29,12 +29,13 @@
               <!--<option>Choose</option> -->
               <option value="" selected disabled hidden>Choose</option>
               <% genres.forEach((genre) => { %>
-                <% if(movie.genre.toString() == genre._id.toString()) { %>
+                <% if((typeof(movie) == 'object' && movie) && movie.genre.toString() == genre._id.toString()) { %>
                   <option selected value="<%= genre._id %>"><%= genre.name %></option>
                   <% } else { %>
                   <option value="<%= genre._id %>"><%= genre.name %></option>
                 <% } %>
               <% }) %>
+              <option value="Other">Other</option>
             </select>
           </div>
           <p class=pl-3>or</p>
