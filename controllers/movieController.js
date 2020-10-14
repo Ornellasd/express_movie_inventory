@@ -118,25 +118,34 @@ exports.movie_edit_get = function(req, res) {
 exports.movie_edit_post = function(req, res) {
   let genreSelection;
 
-  if(req.body.otherGenre.length > 0) {
-    const genre = new Genre ({ name: req.body.otherGenre });
-    genreSelection = genre._id;
-    genre.save();
-  } else {
-    genreSelection = req.body.selectedGenre;
-  }
-
-  const movie = new Movie({
-    title: req.body.movieTitle,
-    description: req.body.movieDesc,
-    cost: req.body.moviePrice,
-    stock: req.body.movieStock,
-    genre: genreSelection,
-    _id: req.params.id, 
-  });
-
-  Movie.findByIdAndUpdate(req.params.id, movie, {}, function(err, movie) {
+  async.parallel({
+    genre: function(callback) {
+      Genre.findOne({ 'name': req.body.otherGenre }).exec(callback)
+    },
+  }, function(err, results) {
     if (err) return err;
-    res.redirect(movie.url);
+    if(results.genre) {
+      genreSelection = results.genre._id;
+    } else {
+      const newGenre = new Genre({ name: req.body.otherGenre });
+      newGenre.save();
+      genreSelection = newGenre._id;
+    }
+
+    const movie = new Movie({
+      title: req.body.movieTitle,
+      description: req.body.movieDesc,
+      cost: req.body.moviePrice,
+      stock: req.body.movieStock,
+      genre: genreSelection,
+      _id: req.params.id, 
+    });
+
+    Movie.findByIdAndUpdate(req.params.id, movie, {}, function(err, movie) {
+      if (err) return err;
+      res.redirect(movie.url);
+    });
   });
+
 };
+
