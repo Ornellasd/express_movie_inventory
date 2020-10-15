@@ -33,26 +33,22 @@ exports.movie_create_post = (req, res) => {
 
   async.parallel({
     genre: (callback) => {
-      Genre.findOne({
-        'name': req.body.otherGenre
-      }).exec(callback)
+      Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
     },
   }, (err, results) => {
     if (err) return err;
-    if (req.body.otherGenre.length == 0) {
+    if(req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
-    } else if (results.genre) {
+    } else if(results.genre && req.body.otherGenre.length >= 1) {
+      //Genre exists, set id to it
       genreSelection = results.genre._id;
     } else {
-      const newGenre = new Genre({
-        name: req.body.otherGenre
-      });
-      newGenre.save((err) => {
-        return err;
-      });
-      genreSelection = newGenre._id;
+      // Genre doesn't exist, create genre and set id
+      const newGenre = new Genre({ name: req.body.otherGenre });
+      newGenre.save(err => err);
+      genreSelection = newGenre._id
     }
-
+    
     const movie = new Movie({
       title: req.body.movieTitle,
       description: req.body.movieDesc,
@@ -66,7 +62,6 @@ exports.movie_create_post = (req, res) => {
       if (err) return err;
       res.redirect(movie.url);
     });
-
   });
 
 };
@@ -132,26 +127,22 @@ exports.movie_edit_post = (req, res) => {
 
   async.parallel({
     genre: (callback) => {
-      Genre.findOne({
-        'name': req.body.otherGenre
-      }).exec(callback)
+      Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
     },
-  }, (err, results) =>{
+  }, (err, results) => {
     if (err) return err;
-    if (req.body.otherGenre.length == 0) {
+    if(req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
-    } else if (results.genre) {
+    } else if(results.genre && req.body.otherGenre.length >= 1) {
+      //Genre exists, set id to it
       genreSelection = results.genre._id;
     } else {
-      const newGenre = new Genre({
-        name: req.body.otherGenre
-      });
-      newGenre.save((err) => {
-        return err;
-      });
-      genreSelection = newGenre._id;
+      // Genre doesn't exist, create genre and set id
+      const newGenre = new Genre({ name: req.body.otherGenre });
+      newGenre.save(err => err);
+      genreSelection = newGenre._id
     }
-
+    
     const movie = new Movie({
       title: req.body.movieTitle,
       description: req.body.movieDesc,
@@ -160,7 +151,7 @@ exports.movie_edit_post = (req, res) => {
       genre: genreSelection,
       _id: req.params.id,
     });
-
+    
     Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
       if (err) return err;
       res.redirect(movie.url);
