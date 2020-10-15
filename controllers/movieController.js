@@ -124,11 +124,15 @@ exports.movie_edit_post = function(req, res) {
     },
   }, function(err, results) {
     if (err) return err;
-    if(results.genre) {
+    if(req.body.otherGenre.length == 0) {
+      genreSelection = req.body.selectedGenre;
+    } else if(results.genre) {
       genreSelection = results.genre._id;
-    } else {
+    }else {
       const newGenre = new Genre({ name: req.body.otherGenre });
-      newGenre.save();
+      newGenre.save(function(err) {
+        return err;
+      });
       genreSelection = newGenre._id;
     }
 
