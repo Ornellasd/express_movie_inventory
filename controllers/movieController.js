@@ -2,10 +2,10 @@ const Movie = require('../models/movie');
 const Genre = require('../models/genre');
 const async = require('async');
 
-exports.index = function(req, res) {
+exports.index = (req, res) => {
   Movie.find({}, 'title description cost stock genre')
     .populate('genre')
-    .exec(function(err, list_movies) {
+    .exec((err, list_movies) => {
       if (err) return next(err);
       res.render('index', {
         title: 'All Movies',
@@ -14,12 +14,12 @@ exports.index = function(req, res) {
     });
 };
 
-exports.movie_create_get = function(req, res, next) {
+exports.movie_create_get = (req, res, next) => {
   async.parallel({
-    genres: function(callback) {
+    genres: (callback) => {
       Genre.find(callback);
     },
-  }, function(err, results) {
+  }, (err, results) => {
     if (err) return next(err);
     res.render('movie_form', {
       title: 'Add Movie',
@@ -28,16 +28,16 @@ exports.movie_create_get = function(req, res, next) {
   });
 }
 
-exports.movie_create_post = function(req, res) {
+exports.movie_create_post = (req, res) => {
   let genreSelection;
 
   async.parallel({
-    genre: function(callback) {
+    genre: (callback) => {
       Genre.findOne({
         'name': req.body.otherGenre
       }).exec(callback)
     },
-  }, function(err, results) {
+  }, (err, results) => {
     if (err) return err;
     if (req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
@@ -47,7 +47,7 @@ exports.movie_create_post = function(req, res) {
       const newGenre = new Genre({
         name: req.body.otherGenre
       });
-      newGenre.save(function(err) {
+      newGenre.save((err) => {
         return err;
       });
       genreSelection = newGenre._id;
@@ -62,7 +62,7 @@ exports.movie_create_post = function(req, res) {
       _id: req.params.id,
     });
 
-    movie.save(function(err) {
+    movie.save((err) => {
       if (err) return err;
       res.redirect(movie.url);
     });
@@ -71,15 +71,15 @@ exports.movie_create_post = function(req, res) {
 
 };
 
-exports.movie_detail = function(req, res) {
+exports.movie_detail = (req, res) => {
   async.parallel({
-    movie: function(callback) {
+    movie: (callback) => {
       Movie.findById(req.params.id)
         .populate('genre')
         .exec(callback);
     },
 
-  }, function(err, results) {
+  }, (err, results) => {
     if (err) return next(err);
     if (results.movie == null) { // No results.
       var err = new Error('Movie not found');
@@ -94,8 +94,8 @@ exports.movie_detail = function(req, res) {
   });
 };
 
-exports.movie_delete_get = function(req, res) {
-  Movie.findById(req.params.id, function(err, movie) {
+exports.movie_delete_get = (req, res) => {
+  Movie.findById(req.params.id, (err, movie) => {
     if (err) return err;
     res.render('movie_delete', {
       title: `Delete ${movie.title}?`,
@@ -103,21 +103,21 @@ exports.movie_delete_get = function(req, res) {
   });
 };
 
-exports.movie_delete_post = function(req, res) {
-  Movie.findByIdAndRemove(req.params.id, function(err, movie) {
+exports.movie_delete_post = (req, res) => {
+  Movie.findByIdAndRemove(req.params.id, (err, movie) => {
     if (err) return err;
     res.redirect('/');
   });
 }
 
-exports.movie_edit_get = function(req, res) {
-  Genre.find({}, 'name', function(err, genres) {
+exports.movie_edit_get = (req, res) => {
+  Genre.find({}, 'name', (err, genres) => {
     if (err) return err;
     existingGenres = genres;
   });
 
   Movie.findById(req.params.id).
-  exec(function(err, movie) {
+  exec((err, movie) => {
     if (err) return err;
     res.render('movie_form', {
       title: 'Edit Movie',
@@ -127,16 +127,16 @@ exports.movie_edit_get = function(req, res) {
   });
 };
 
-exports.movie_edit_post = function(req, res) {
+exports.movie_edit_post = (req, res) => {
   let genreSelection;
 
   async.parallel({
-    genre: function(callback) {
+    genre: (callback) => {
       Genre.findOne({
         'name': req.body.otherGenre
       }).exec(callback)
     },
-  }, function(err, results) {
+  }, (err, results) =>{
     if (err) return err;
     if (req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
@@ -146,7 +146,7 @@ exports.movie_edit_post = function(req, res) {
       const newGenre = new Genre({
         name: req.body.otherGenre
       });
-      newGenre.save(function(err) {
+      newGenre.save((err) => {
         return err;
       });
       genreSelection = newGenre._id;
@@ -161,10 +161,9 @@ exports.movie_edit_post = function(req, res) {
       _id: req.params.id,
     });
 
-    Movie.findByIdAndUpdate(req.params.id, movie, {}, function(err, movie) {
+    Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
       if (err) return err;
       res.redirect(movie.url);
     });
   });
-
 };

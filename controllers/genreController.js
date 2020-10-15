@@ -3,9 +3,9 @@ const Movie = require('../models/movie');
 
 const async = require('async');
 
-exports.genre_list = function(req, res) {
+exports.genre_list = (req, res) => {
   Genre.find({}, 'name')
-    .exec(function(err, list_genres) {
+    .exec((err, list_genres) => {
       if(err) return err;
       res.render('genre_list', {
         title: 'Genre List',
@@ -14,17 +14,17 @@ exports.genre_list = function(req, res) {
     });
 };
 
-exports.genre_detail = function(req, res) {
+exports.genre_detail = (req, res) => {
  async.parallel({
-    genre: function(callback) {
+    genre: (callback) => {
       Genre.findById(req.params.id)
         .exec(callback)
     },
-    genre_movies: function(callback) {
+    genre_movies: (callback) => {
       Movie.find({'genre': req.params.id }, 'title description cost stock genre').exec(callback);
 
     }
-  }, function(err, results) {
+  }, (err, results) => {
     if (err) {
       return next(err);
     } // Error in API usage.
