@@ -1,8 +1,15 @@
 const selectedGenre = document.querySelector('#selectedGenre');
-const addNewGenreField = document.querySelector('#addNewGenre');
+const addNewGenreDiv = document.querySelector('#addNewGenre');
+const addNewGenreInput = document.querySelector('#otherGenre');
 
-addNewGenreField.hidden = true
+addNewGenreDiv.hidden = true
 
 selectedGenre.addEventListener('change', () => {
-  (selectedGenre.value == 'Other') ? addNewGenreField.hidden = false : addNewGenreField.hidden = true;
+  if(selectedGenre.value == 'Other') {
+    addNewGenreDiv.hidden = false;
+    addNewGenreInput.setAttribute('required', 'true');
+  } else {
+    addNewGenreDiv.hidden = true;
+    addNewGenreInput.removeAttribute('required')
+  }
 });
