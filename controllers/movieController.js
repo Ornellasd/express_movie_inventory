@@ -3,7 +3,7 @@ const Genre = require('../models/genre');
 const async = require('async');
 
 exports.index = (req, res) => {
-  Movie.find({}, 'title description cost stock genre')
+  Movie.find({}, 'title description cost stock genre image')
     .populate('genre')
     .exec((err, list_movies) => {
       if (err) return next(err);
@@ -29,14 +29,16 @@ exports.movie_create_get = (req, res, next) => {
 }
 
 exports.movie_create_post = (req, res) => {
-  
+  let genreSelection;
+  let imagePath;
+
   if(req.file) {
+    imagePath = `images/uploads/${req.file.filename}`;
     console.log('IMAGE UPLOADED');
   } else {
     console.log('NO IMAGE UPLOADED');
   }
-  let genreSelection;
-
+  
   async.parallel({
     genre: (callback) => {
       Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
@@ -61,6 +63,7 @@ exports.movie_create_post = (req, res) => {
       cost: req.body.moviePrice,
       stock: req.body.movieStock,
       genre: genreSelection,
+      image: imagePath,
       _id: req.params.id,
     });
 
