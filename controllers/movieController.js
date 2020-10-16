@@ -29,6 +29,12 @@ exports.movie_create_get = (req, res, next) => {
 }
 
 exports.movie_create_post = (req, res) => {
+  
+  if(req.file) {
+    console.log('IMAGE UPLOADED');
+  } else {
+    console.log('NO IMAGE UPLOADED');
+  }
   let genreSelection;
 
   async.parallel({

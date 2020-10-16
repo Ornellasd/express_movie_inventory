@@ -6,7 +6,7 @@
     <div class="container">
       <h2 class="text-center mt-2"><%= title %></h2>
       <div class="card box-shadow p-3 mb-3">
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
           <div class="form-group">
             <label for="movieTitle" class="font-weight-bold">Title:</label>
             <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.title: '' %>">
@@ -40,6 +40,9 @@
           <div class="form-group" id="addNewGenre">
             <label for="addNewGenre">Add New Genre:</label>
             <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
+          </div>
+          <div class="form-group">
+            <input type="file" class="form-control-file btn" name="image">
           </div>
           <button type="submit" class="btn btn-success">Submit</button>
         </form>
