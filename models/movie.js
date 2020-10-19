@@ -24,7 +24,7 @@ MovieSchema
 MovieSchema
 .virtual('cost_formatted')
 .get(function() {
-  return '$' + this.cost;
-})
+  return '$' + (this.cost.toFixed(2));
+});
 
 module.exports = mongoose.model('Movie', MovieSchema);

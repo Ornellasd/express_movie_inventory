@@ -50,7 +50,7 @@ exports.movie_create_post = (req, res) => {
       newGenre.save(err => err);
       genreSelection = newGenre._id
     }
-    
+
     const movie = new Movie({
       title: req.body.movieTitle,
       description: req.body.movieDesc,
