@@ -101,7 +101,7 @@ exports.movie_delete_get = (req, res) => {
   Movie.findById(req.params.id, (err, movie) => {
     if (err) return err;
     res.render('movie_delete', {
-      title: `Delete ${movie.title}?`,
+      title: `Delete ${movie.title}`,
     });
   });
 };
