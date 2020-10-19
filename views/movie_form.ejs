@@ -24,7 +24,7 @@
             <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.stock: '' %>">
           </div>
           <div class=form-group><label>Genre:</label>
-            <select type="select" class="form-control" id="selectedGenre" name="selectedGenre">
+            <select type="select" class="form-control" id="selectedGenre" name="selectedGenre" required>
               <option value="" selected disabled hidden>Choose</option>
               <% genres.forEach((genre) => { %>
                 <% if((typeof(movie) == 'object' && movie) && movie.genre.toString() == genre._id.toString()) { %>
