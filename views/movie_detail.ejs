@@ -10,7 +10,7 @@
              <div class="col-md-8">
               <h3 class="text-center"><%= movie.title %></h3>
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="/images/no_image.jpg" alt="Card image cap">
+                <img class="card-img-top" src="<%= movie.image %>" alt="Card image cap">
                 <div class="card-body">
                   <a href="<%= '/genre/' + movie.genre._id %>"><%= movie.genre.name %></a>
                   <p class="card-text" id="description"><%= movie.description %></p>

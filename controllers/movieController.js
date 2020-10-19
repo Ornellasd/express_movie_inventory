@@ -1,6 +1,8 @@
 const Movie = require('../models/movie');
 const Genre = require('../models/genre');
+
 const async = require('async');
+const fs = require('fs');
 
 exports.index = (req, res) => {
   Movie.find({}, 'title description cost stock genre image')
@@ -29,15 +31,7 @@ exports.movie_create_get = (req, res, next) => {
 }
 
 exports.movie_create_post = (req, res) => {
-  let genreSelection;
-  let imagePath;
-
-  if(req.file) {
-    imagePath = `images/uploads/${req.file.filename}`;
-    console.log('IMAGE UPLOADED');
-  } else {
-    console.log('NO IMAGE UPLOADED');
-  }
+  let genreSelection; 
   
   async.parallel({
     genre: (callback) => {
@@ -63,9 +57,14 @@ exports.movie_create_post = (req, res) => {
       cost: req.body.moviePrice,
       stock: req.body.movieStock,
       genre: genreSelection,
-      image: imagePath,
       _id: req.params.id,
     });
+
+    // Image upload 
+    if(req.file) {
+      const imagePath = `/images/uploads/${req.file.filename}`;
+      movie.image = imagePath;
+    }
 
     movie.save((err) => {
       if (err) return err;
@@ -108,10 +107,19 @@ exports.movie_delete_get = (req, res) => {
 };
 
 exports.movie_delete_post = (req, res) => {
+  
   Movie.findByIdAndRemove(req.params.id, (err, movie) => {
-    if (err) return err;
+    if(err) return err;
+
+    // If image exists delete that too
+    if(movie.image) {
+      fs.unlink(`./public${movie.image}`, (err) => {
+        if(err) return err;
+      });
+    }
     res.redirect('/');
   });
+  
 }
 
 exports.movie_edit_get = (req, res) => {
@@ -152,7 +160,7 @@ exports.movie_edit_post = (req, res) => {
       genreSelection = newGenre._id
     }
     
-    const movie = new Movie({
+    const movie = new Movie({ 
       title: req.body.movieTitle,
       description: req.body.movieDesc,
       cost: req.body.moviePrice,
