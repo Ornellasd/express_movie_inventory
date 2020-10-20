@@ -10,6 +10,6 @@ selectedGenre.addEventListener('change', () => {
     addNewGenreInput.setAttribute('required', 'true');
   } else {
     addNewGenreDiv.hidden = true;
-    addNewGenreInput.removeAttribute('required')
+    addNewGenreInput.removeAttribute('required');
   }
 });

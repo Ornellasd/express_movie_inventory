@@ -3,8 +3,8 @@
   <%- include('partials/head.ejs') %>
   <body>
     <%- include('partials/navbar.ejs') %>
-    <div class="container">
-      <h2 class="text-center mt-2"><%= title %></h2>
+    <div class="container py-5">
+      <h3 class="text-center mt-2"><%= title %></h3>
       <div class="card box-shadow p-3 mb-3">
         <form method="POST" action="" enctype="multipart/form-data">
           <div class="form-group">
@@ -44,7 +44,10 @@
             <input type="file" class="custom-file-input" id="customFile" name="image">
             <label class="custom-file-label" for="customFile">Choose image(optional)</label>
           </div>
-   
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input class="form-control" type="text" id="password" name="password">
+          </div>
           <button type="submit" class="btn btn-success">Submit</button>
         </form>
       </div>

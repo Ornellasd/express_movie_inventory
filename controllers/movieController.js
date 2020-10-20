@@ -9,6 +9,8 @@ exports.index = (req, res) => {
     .populate('genre')
     .exec((err, list_movies) => {
       if (err) return next(err);
+      // Sort movies alphabetically by title
+      list_movies.sort((a, b) => a.title.localeCompare(b.title));
       res.render('index', {
         title: 'All Movies',
         movies: list_movies,
@@ -107,16 +109,19 @@ exports.movie_delete_get = (req, res) => {
 };
 
 exports.movie_delete_post = (req, res) => {
-  
+
   Movie.findByIdAndRemove(req.params.id, (err, movie) => {
     if(err) return err;
 
-    // If image exists delete that too
+    // If image exists, delete
     if(movie.image) {
       fs.unlink(`./public${movie.image}`, (err) => {
         if(err) return err;
       });
     }
+
+    // If genre is empty, delete
+
     res.redirect('/');
   });
   
