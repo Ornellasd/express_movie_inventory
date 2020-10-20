@@ -39,7 +39,7 @@ router.post('/movie/:id/delete', movie_controller.movie_delete_post);
 router.get('/movie/:id/edit', movie_controller.movie_edit_get);
 
 // POST request to edit a Movie.
-router.post('/movie/:id/edit', movie_controller.movie_edit_post);
+router.post('/movie/:id/edit',  upload.single('image'), movie_controller.movie_edit_post);
 
 // GET Genre list page
 router.get('/genres', movie_genre_controller.genre_list);

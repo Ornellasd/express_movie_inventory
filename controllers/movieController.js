@@ -119,9 +119,6 @@ exports.movie_delete_post = (req, res) => {
         if(err) return err;
       });
     }
-
-    // If genre is empty, delete
-
     res.redirect('/');
   });
   
@@ -145,8 +142,8 @@ exports.movie_edit_get = (req, res) => {
 };
 
 exports.movie_edit_post = (req, res) => {
-  let genreSelection;
-
+ let genreSelection; 
+  
   async.parallel({
     genre: (callback) => {
       Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
@@ -165,7 +162,7 @@ exports.movie_edit_post = (req, res) => {
       genreSelection = newGenre._id
     }
     
-    const movie = new Movie({ 
+    const movie = new Movie({
       title: req.body.movieTitle,
       description: req.body.movieDesc,
       cost: req.body.moviePrice,
@@ -173,10 +170,17 @@ exports.movie_edit_post = (req, res) => {
       genre: genreSelection,
       _id: req.params.id,
     });
-    
+
+    // Image upload 
+    if(req.file) {
+      const imagePath = `/images/uploads/${req.file.filename}`;
+      movie.image = imagePath;
+    }
+
     Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
       if (err) return err;
       res.redirect(movie.url);
     });
+
   });
 };
