@@ -6,10 +6,19 @@
     <div class="container py-5">
       <h3 class="text-center"><%= title %></h3>
       <% genres.forEach((genre) => { %>
-      <a href="<%= genre.url %>">
+      
         <div class="card my-2">
           <div class="card-body">
-            <%= genre.name %>
+            <a href="<%= genre.url %>">
+              <div class="float-left">
+                <%= genre.name %>
+              </div>
+            </a>
+            <a href="<%= genre.url%>/delete">  
+              <div class="float-right">
+                <i class="fa fa-trash float-right"></i>
+              </div>
+            </a>
           </div>
         </div>
       </a>

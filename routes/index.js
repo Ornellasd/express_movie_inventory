@@ -47,4 +47,10 @@ router.get('/genres', movie_genre_controller.genre_list);
 // Get Genre detail
 router.get('/genre/:id', movie_genre_controller.genre_detail);
 
+// Get request to delete a genre.
+router.get('/genre/:id/delete', movie_genre_controller.genre_delete_get);
+
+// Post request to delete a genre.
+router.post('/genre/:id/delete', movie_genre_controller.genre_delete_post);
+
 module.exports = router;

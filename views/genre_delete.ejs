@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head.ejs') %>
+  <body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container text-center py-5">
+      <% if(genre_movies.length) { %>
+        <div class="alert alert-danger" role="alert">
+          <p><strong>Delete the following movies first:</strong></p>
+        </div>
+
+        <% genre_movies.forEach((movie) => { %>
+          <div class="card my-2">
+            <div class="card-body">
+              <a href="<%= movie.url %>">
+                <div class="float-left">
+                  <%= movie.title %>
+                </div>
+              </a>
+            </div>
+          </div>
+        <% }) %>
+
+      <% } else { %>
+        <h1><%= title %></h1>
+        <p>Do you really want to delete this Genre?</p>
+        <form method="POST" action="">
+          <div class="form-group">
+            <input type="hidden">
+          </div>
+          <button class="btn btn-primary" type="submit">Delete</button>
+        </form>
+      <% } %>
+    </div>
+    <%- include('partials/footer.ejs') %>
+  </body>
+</html>

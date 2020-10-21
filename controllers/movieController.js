@@ -177,10 +177,16 @@ exports.movie_edit_post = (req, res) => {
       movie.image = imagePath;
     }
 
-    Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
-      if (err) return err;
-      res.redirect(movie.url);
-    });
+    //Check for password
+    if(req.body.password == 'oogabooga') {
+      Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
+        if (err) return err;
+        res.redirect(movie.url);
+      });
+    } else {
+      console.log('NONE SHALL PASS!');
+    }
+    
 
   });
 };
