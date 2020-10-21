@@ -11,9 +11,20 @@ exports.index = (req, res) => {
       if (err) return next(err);
       // Sort movies alphabetically by title
       list_movies.sort((a, b) => a.title.localeCompare(b.title));
+
+      let imageArray = [];
+      list_movies.forEach((movie) => {
+        if(movie.image !== undefined) {
+          imageArray.push(movie.image);
+        }
+      });
+
+      console.log(imageArray);
+
       res.render('index', {
         title: 'All Movies',
         movies: list_movies,
+        images: imageArray,
       });
     });
 };
