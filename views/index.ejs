@@ -4,7 +4,7 @@
   <body>
     <%- include('partials/navbar.ejs') %>
     <main role="main">
-      <% if(typeof(carousel) == 'object' && carousel.length > 0) { %>
+      <% if(typeof(carousel) == 'object' && carousel.length > 1) { %>
         <%- include('partials/carousel.ejs') %>
       <% } %>
       <div class="album py-5">
