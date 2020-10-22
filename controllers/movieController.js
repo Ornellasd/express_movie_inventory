@@ -19,8 +19,6 @@ exports.index = (req, res) => {
         }
       });
 
-      console.log(imageArray);
-
       res.render('index', {
         title: 'All Movies',
         movies: list_movies,
