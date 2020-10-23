@@ -14,7 +14,16 @@ exports.index = (req, res) => {
 
       // Set up carousel images, exlcluding any that are using no_image.jpg
       const carouselData = list_movies.filter(movie => movie.image !== undefined);
-
+     
+      // Randomize order of carouselData
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      shuffleArray(carouselData);
+      
       res.render('index', {
         title: 'All Movies',
         movies: list_movies,
