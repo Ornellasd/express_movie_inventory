@@ -4,11 +4,11 @@
   <body>
     <%- include('partials/navbar.ejs') %>
     <div class="container text-center py-5">
+      <h3 class="text-center"><%= title %></h3>
       <% if(genre_movies.length) { %>
         <div class="alert alert-danger" role="alert">
-          <p><strong>Delete the following movies first:</strong></p>
+          <strong>Delete the following movies first:</strong>
         </div>
-
         <% genre_movies.forEach((movie) => { %>
           <div class="card my-2">
             <div class="card-body">
@@ -20,7 +20,6 @@
             </div>
           </div>
         <% }) %>
-
       <% } else { %>
         <h1><%= title %></h1>
         <p>Do you really want to delete this Genre?</p>
