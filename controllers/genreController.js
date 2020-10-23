@@ -18,7 +18,7 @@ exports.genre_list = (req, res) => {
     });
 };
 
-exports.genre_detail = (req, res) => {
+exports.genre_detail = (req, res, next) => {
  async.parallel({
     genre: (callback) => {
       Genre.findById(req.params.id)
@@ -48,7 +48,7 @@ exports.genre_detail = (req, res) => {
   });
 };
 
-exports.genre_delete_get = (req, res) => {
+exports.genre_delete_get = (req, res, next) => {
    async.parallel({
     genre: (callback) => {
       Genre.findById(req.params.id)
@@ -82,7 +82,7 @@ exports.genre_delete_post = (req, res) => {
   Movie.find({'genre': req.params.id}, 'title')
     .exec((err, genre_movies) => {
       Genre.findByIdAndRemove(req.params.id, function(err, genre) {
-        if(err) return err;
+        if(err) return next(err);
         res.redirect('/genres');
       });
     });
