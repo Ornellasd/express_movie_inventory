@@ -12,18 +12,12 @@ exports.index = (req, res) => {
       // Sort movies alphabetically by title
       list_movies.sort((a, b) => a.title.localeCompare(b.title));
 
-      // Set up carousel images, exlcluding any that are using no_image.jpg
-      const carouselData = list_movies.filter(movie => movie.image !== undefined);
-     
-      // Randomize order of carouselData
-      function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-      }
-      shuffleArray(carouselData);
-      
+      // Set up carousel images, exlcluding any that are using no_image.jpg in random order
+      const carouselData = list_movies.filter(movie => movie.image !== undefined)
+        .map((a) => ({sort: Math.random(), value: a}))
+        .sort((a, b) => a.sort - b.sort)
+        .map((a) => a.value)
+
       res.render('index', {
         title: 'All Movies',
         movies: list_movies,
