@@ -8,6 +8,7 @@ selectedGenre.addEventListener('change', () => {
   if(selectedGenre.value == 'Other') {
     addNewGenreDiv.hidden = false;
     addNewGenreInput.setAttribute('required', 'true');
+    addNewGenreInput.focus();
   } else {
     addNewGenreDiv.hidden = true;
     addNewGenreInput.removeAttribute('required');

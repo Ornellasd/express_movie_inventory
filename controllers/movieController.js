@@ -194,7 +194,5 @@ exports.movie_edit_post = (req, res) => {
     } else {
       console.log('NONE SHALL PASS!');
     }
-    
-
   });
 };
