@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head.ejs') %>
+  <body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container py-5">
+      <h3 class="text-center mt-2"><%= title %></h3>
+      <div class="card box-shadow p-3 mb-3">
+        <form method="POST" action="" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="movieTitle" class="font-weight-bold">Title:</label>
+            <input class="form-control" type="text" id="movieTitle" name="movieTitle" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.title: '' %>">
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="apiCheck">
+            <label class="form-check-label" for="apiCheck">Pull data from API</label>
+          </div>
+          <div class="form-group" id="movieDescDiv">
+            <label for="movieDesc">Description:</label>
+            <textarea class="form-control" type="textarea" id="movieDesc" name="movieDesc" required="true" rows="3"><%= typeof(movie) == 'object' && movie ? movie.description: '' %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="moviePrice">Price:</label>
+            <input class="form-control" type="text" id="moviePrice" name="moviePrice" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.cost: '' %>">
+          </div>
+          <div class="form-group">
+            <label for="movieStock">Stock:</label>
+            <input class="form-control" type="text" id="movieStock" name="movieStock" required="true" value="<%= typeof(movie) == 'object' && movie ? movie.stock: '' %>">
+          </div>
+          <div class=form-group><label>Genre:</label>
+            <select type="select" class="form-control" id="selectedGenre" name="selectedGenre" required>
+              <option value="" selected disabled hidden>Choose</option>
+              <% genres.forEach((genre) => { %>
+                <% if((typeof(movie) == 'object' && movie) && movie.genre.toString() == genre._id.toString()) { %>
+                  <option selected value="<%= genre._id %>"><%= genre.name %></option>
+                  <% } else { %>
+                  <option value="<%= genre._id %>"><%= genre.name %></option>
+                <% } %>
+              <% }) %>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group" id="addNewGenre">
+            <label for="addNewGenre">Add New Genre:</label>
+            <input class="form-control" type="text" id="otherGenre" name="otherGenre" value="">
+          </div>
+          <div class="form-group custom-file pb-5" id="imageDiv">
+            <input type="file" class="custom-file-input" id="customFile" name="image">
+            <label class="custom-file-label" for="customFile">Choose image(optional)</label>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input class="form-control" type="text" id="password" name="password">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+    </div>
+    <%- include('partials/footer.ejs') %>
+    <script src="/javascripts/form_scripts.js"></script>
+  </body>
+</html>

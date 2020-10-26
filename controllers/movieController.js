@@ -1,10 +1,42 @@
 const Movie = require('../models/movie');
 const Genre = require('../models/genre');
-
+//const test = require ('../public/javascripts/grab-thumb');
 const async = require('async');
 const fs = require('fs');
+const fetch = require('node-fetch');
+
+/*
+const grabThumbnail = async (movie) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=61fcbe8094f67db5131d82ab382c6bbd&include_adult=false&query=${movie}`;
+  let movieTitle;
+  let movieID;
+
+  try {
+    await fetch(url)
+      .then(response => response.json())
+      .then((data) => {
+        movieTitle = data.results[0].title;
+        movieID = data.results[0].id;
+        return fetch(`http://webservice.fanart.tv/v3/movies/107?api_key=2b81a8a520b8656ff46c9ed7a8263e72`)
+          .then(thumbResponse => thumbResponse.json())
+          .then((thumbData) => {
+            //const thumbnail = thumbData.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
+            const thumbnail = await thumbData.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
+            //console.log(thumbnail)
+            return thumbnail;
+          });
+
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+grabThumbnail('Snatch').then(response => console.log(response));
+*/
 
 exports.index = (req, res, next) => {
+
   Movie.find({}, 'title description cost stock genre image')
     .populate('genre')
     .exec((err, list_movies) => {
@@ -14,7 +46,10 @@ exports.index = (req, res, next) => {
 
       // Set up carousel images, exlcluding any that are using no_image.jpg in random order
       const carouselData = list_movies.filter(movie => movie.image !== undefined)
-        .map((a) => ({sort: Math.random(), value: a}))
+        .map((a) => ({
+          sort: Math.random(),
+          value: a
+        }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value)
 
@@ -33,52 +68,91 @@ exports.movie_create_get = (req, res, next) => {
     },
   }, (err, results) => {
     if (err) return next(err);
-    res.render('movie_form', {
+    res.render('movie_form_api', {
       title: 'Add Movie',
       genres: results.genres,
     });
   });
+  console.log(process.env.MOVIEDB_KEY);
 }
 
 exports.movie_create_post = (req, res, next) => {
-  let genreSelection; 
-  
+  let genreSelection;
+ 
+  const MOVIEDB_KEY = '';
+  const FANART_KEY = '';
+  let movieTitle;
+  let movieDescription;
+   
+  function grabMovieData(movie) {
+    return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDB_KEY}&include_adult=false&query=${movie}`)
+    .then(response => response.json())
+    .then((data) => {
+      movieTitle = data.results[0].title;
+      movieDescription = data.results[0].overview;
+      return fetch(`http://webservice.fanart.tv/v3/movies/${data.results[0].id}?api_key=${FANART_KEY}`)
+    });
+  }
+
+  const processMovieData = async (movie) => {
+    const movieData = await grabMovieData(req.body.movieTitle);
+    const response = await movieData.json();
+    const thumbnail = await response.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
+    return thumbnail;
+  }
+
+
   async.parallel({
     genre: (callback) => {
-      Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
+      Genre.findOne({
+        'name': {
+          $regex: new RegExp(req.body.otherGenre, 'i')
+        }
+      }).exec(callback)
     },
   }, (err, results) => {
     if (err) return next(err);
-    if(req.body.otherGenre.length == 0) {
+    
+    if (req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
-    } else if(results.genre && req.body.otherGenre.length >= 1) {
+    } else if (results.genre && req.body.otherGenre.length >= 1) {
       //Genre exists, set id to it
       genreSelection = results.genre._id;
     } else {
       // Genre doesn't exist, create genre and set id
-      const newGenre = new Genre({ name: req.body.otherGenre });
-      newGenre.save(err => err);
+      const newGenre = new Genre({
+        name: req.body.otherGenre
+      });
+      newGenre.save(err => next(err));
       genreSelection = newGenre._id
     }
+      /*
+      const movie = new Movie({
+        title: req.body.movieTitle,
+        description: req.body.movieDesc,
+        cost: req.body.moviePrice,
+        stock: req.body.movieStock,
+        genre: genreSelection,
+        image: response,
+        _id: req.params.id,
+      });
+    */
 
-    const movie = new Movie({
-      title: req.body.movieTitle,
-      description: req.body.movieDesc,
-      cost: req.body.moviePrice,
-      stock: req.body.movieStock,
-      genre: genreSelection,
-      _id: req.params.id,
-    });
-
-    // Image upload 
-    if(req.file) {
-      const imagePath = `/images/uploads/${req.file.filename}`;
-      movie.image = imagePath;
-    }
-
-    movie.save((err) => {
-      if (err) return next(err);
-      res.redirect(movie.url);
+    processMovieData(req.body.movieTitle).then((response) => {
+      const movie = new Movie({
+        title: req.body.movieTitle,
+        description: movieDescription == '' ? req.body.movieDesc: movieDescription,
+        cost: req.body.moviePrice,
+        stock: req.body.movieStock,
+        genre: genreSelection,
+        image: response,
+        _id: req.params.id,
+      });
+      console.log(movie);
+      movie.save((err) => {
+        if (err) return next(err);
+        res.redirect(movie.url);
+      });
     });
   });
 
@@ -119,17 +193,17 @@ exports.movie_delete_get = (req, res, next) => {
 exports.movie_delete_post = (req, res, next) => {
 
   Movie.findByIdAndRemove(req.params.id, (err, movie) => {
-    if(err) return next(err);
+    if (err) return next(err);
 
     // If image exists, delete
-    if(movie.image) {
+    if (movie.image) {
       fs.unlink(`./public${movie.image}`, (err) => {
-        if(err) return next(err);
+        if (err) return next(err);
       });
     }
     res.redirect('/');
   });
-  
+
 }
 
 exports.movie_edit_get = (req, res, next) => {
@@ -150,26 +224,32 @@ exports.movie_edit_get = (req, res, next) => {
 };
 
 exports.movie_edit_post = (req, res, next) => {
- let genreSelection; 
-  
+  let genreSelection;
+
   async.parallel({
     genre: (callback) => {
-      Genre.findOne({ 'name': { $regex : new RegExp(req.body.otherGenre, 'i') } }).exec(callback)
+      Genre.findOne({
+        'name': {
+          $regex: new RegExp(req.body.otherGenre, 'i')
+        }
+      }).exec(callback)
     },
   }, (err, results) => {
     if (err) return next(err);
-    if(req.body.otherGenre.length == 0) {
+    if (req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
-    } else if(results.genre && req.body.otherGenre.length >= 1) {
+    } else if (results.genre && req.body.otherGenre.length >= 1) {
       //Genre exists, set id to it
       genreSelection = results.genre._id;
     } else {
       // Genre doesn't exist, create genre and set id
-      const newGenre = new Genre({ name: req.body.otherGenre });
+      const newGenre = new Genre({
+        name: req.body.otherGenre
+      });
       newGenre.save(err => next(err));
       genreSelection = newGenre._id
     }
-    
+
     const movie = new Movie({
       title: req.body.movieTitle,
       description: req.body.movieDesc,
@@ -180,13 +260,13 @@ exports.movie_edit_post = (req, res, next) => {
     });
 
     // Image upload 
-    if(req.file) {
+    if (req.file) {
       const imagePath = `/images/uploads/${req.file.filename}`;
       movie.image = imagePath;
     }
 
     //Check for password
-    if(req.body.password == 'oogabooga') {
+    if (req.body.password == 'oogabooga') {
       Movie.findByIdAndUpdate(req.params.id, movie, {}, (err, movie) => {
         if (err) return next(err);
         res.redirect(movie.url);
