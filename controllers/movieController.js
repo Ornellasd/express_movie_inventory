@@ -5,36 +5,6 @@ const async = require('async');
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-/*
-const grabThumbnail = async (movie) => {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=61fcbe8094f67db5131d82ab382c6bbd&include_adult=false&query=${movie}`;
-  let movieTitle;
-  let movieID;
-
-  try {
-    await fetch(url)
-      .then(response => response.json())
-      .then((data) => {
-        movieTitle = data.results[0].title;
-        movieID = data.results[0].id;
-        return fetch(`http://webservice.fanart.tv/v3/movies/107?api_key=2b81a8a520b8656ff46c9ed7a8263e72`)
-          .then(thumbResponse => thumbResponse.json())
-          .then((thumbData) => {
-            //const thumbnail = thumbData.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
-            const thumbnail = await thumbData.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
-            //console.log(thumbnail)
-            return thumbnail;
-          });
-
-      });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-grabThumbnail('Snatch').then(response => console.log(response));
-*/
-
 exports.index = (req, res, next) => {
 
   Movie.find({}, 'title description cost stock genre image')
@@ -78,9 +48,9 @@ exports.movie_create_get = (req, res, next) => {
 
 exports.movie_create_post = (req, res, next) => {
   let genreSelection;
- 
-  const MOVIEDB_KEY = '';
-  const FANART_KEY = '';
+  
+  const MOVIEDB_KEY = process.env.MOVIEDB_KEY;
+  const FANART_KEY = process.env.FANART_KEY;
   let movieTitle;
   let movieDescription;
    
