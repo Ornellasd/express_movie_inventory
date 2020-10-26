@@ -43,7 +43,6 @@ exports.movie_create_get = (req, res, next) => {
       genres: results.genres,
     });
   });
-  console.log(process.env.MOVIEDB_KEY);
 }
 
 exports.movie_create_post = (req, res, next) => {
@@ -96,36 +95,37 @@ exports.movie_create_post = (req, res, next) => {
       newGenre.save(err => next(err));
       genreSelection = newGenre._id
     }
-      /*
+  
+    function createNewMovie(title, description) {
       const movie = new Movie({
-        title: req.body.movieTitle,
-        description: req.body.movieDesc,
+        title: title,
+        description: description,
         cost: req.body.moviePrice,
         stock: req.body.movieStock,
         genre: genreSelection,
-        image: response,
-        _id: req.params.id,
+        _id: req.params.id
       });
-    */
+      return movie;
+    }
 
-    processMovieData(req.body.movieTitle).then((response) => {
-      const movie = new Movie({
-        title: req.body.movieTitle,
-        description: movieDescription == '' ? req.body.movieDesc: movieDescription,
-        cost: req.body.moviePrice,
-        stock: req.body.movieStock,
-        genre: genreSelection,
-        image: response,
-        _id: req.params.id,
+    if(req.body.apiCheck !== undefined) {
+       processMovieData(req.body.movieTitle).then((response) => {
+        const newMovie = createNewMovie(req.body.movieTitle, movieDescription);
+        newMovie.image = response;
+        newMovie.save((err) => {
+          if (err) return next(err);
+          res.redirect(newMovie.url);
+        });
       });
-      console.log(movie);
-      movie.save((err) => {
-        if (err) return next(err);
-        res.redirect(movie.url);
+
+    } else {
+      const newMovie = createNewMovie(req.body.movieTitle, req.body.movieDesc);
+      newMovie.save((err) => {
+        if(err) return next(err);
+        res.redirect(newMovie.url);
       });
-    });
+    }
   });
-
 };
 
 exports.movie_detail = (req, res) => {
