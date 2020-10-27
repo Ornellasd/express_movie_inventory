@@ -1,6 +1,5 @@
 const Movie = require('../models/movie');
 const Genre = require('../models/genre');
-//const test = require ('../public/javascripts/grab-thumb');
 const async = require('async');
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -55,21 +54,24 @@ exports.movie_create_post = (req, res, next) => {
    
   function grabMovieData(movie) {
     return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDB_KEY}&include_adult=false&query=${movie}`)
-    .then(response => response.json())
-    .then((data) => {
-      movieTitle = data.results[0].title;
-      movieDescription = data.results[0].overview;
-      return fetch(`http://webservice.fanart.tv/v3/movies/${data.results[0].id}?api_key=${FANART_KEY}`)
+      .then(response => response.json())
+      .then((data) => {
+        movieTitle = data.results[0].title;
+        movieDescription = data.results[0].overview;
+        return fetch(`http://webservice.fanart.tv/v3/movies/${data.results[0].id}?api_key=${FANART_KEY}`)
     });
   }
-
+   
   const processMovieData = async (movie) => {
-    const movieData = await grabMovieData(req.body.movieTitle);
+    const movieData = await grabMovieData(movie);
     const response = await movieData.json();
-    const thumbnail = await response.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
-    return thumbnail;
+    try {
+      const thumbnail = await response.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
+      return thumbnail;  
+    } catch(err) {
+      console.log('NO THUMBNAIL FOUND!');
+    }
   }
-
 
   async.parallel({
     genre: (callback) => {
@@ -110,18 +112,24 @@ exports.movie_create_post = (req, res, next) => {
 
     if(req.body.apiCheck !== undefined) {
        processMovieData(req.body.movieTitle).then((response) => {
-        const newMovie = createNewMovie(req.body.movieTitle, movieDescription);
+        newMovie = createNewMovie(req.body.movieTitle, movieDescription);
         newMovie.image = response;
         newMovie.save((err) => {
           if (err) return next(err);
           res.redirect(newMovie.url);
         });
       });
-
     } else {
-      const newMovie = createNewMovie(req.body.movieTitle, req.body.movieDesc);
+      newMovie = createNewMovie(req.body.movieTitle, req.body.movieDesc);
+      
+      // Image upload 
+      if (req.file) {
+        const imagePath = `/images/uploads/${req.file.filename}`;
+        newMovie.image = imagePath;
+      }
+
       newMovie.save((err) => {
-        if(err) return next(err);
+      if (err) return next(err);
         res.redirect(newMovie.url);
       });
     }
