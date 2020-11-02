@@ -46,7 +46,6 @@ exports.movie_create_get = (req, res, next) => {
 
 exports.movie_create_post = (req, res, next) => {
   let genreSelection;
-  
   const MOVIEDB_KEY = process.env.MOVIEDB_KEY;
   const FANART_KEY = process.env.FANART_KEY;
   let movieTitle;
@@ -67,9 +66,14 @@ exports.movie_create_post = (req, res, next) => {
     const response = await movieData.json();
     try {
       const thumbnail = await response.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
-      return thumbnail;  
+      const poster = await response.movieposter.filter(poster => poster.lang == 'en')[0].url;
+      const artwork = {
+        'thumbnail': thumbnail,
+        'poster': poster
+      };
+      return artwork;  
     } catch(err) {
-      console.log('NO THUMBNAIL FOUND!');
+      console.log('Error finding artwork!');
     }
   }
 
@@ -113,7 +117,7 @@ exports.movie_create_post = (req, res, next) => {
     if(req.body.apiCheck !== undefined) {
        processMovieData(req.body.movieTitle).then((response) => {
         newMovie = createNewMovie(req.body.movieTitle, movieDescription);
-        newMovie.image = response;
+        newMovie.image = response.poster;
         newMovie.save((err) => {
           if (err) return next(err);
           res.redirect(newMovie.url);
