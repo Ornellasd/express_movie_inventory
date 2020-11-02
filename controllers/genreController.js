@@ -25,7 +25,7 @@ exports.genre_detail = (req, res, next) => {
         .exec(callback)
     },
     genre_movies: (callback) => {
-      Movie.find({'genre': req.params.id }, 'title description cost stock genre image').exec(callback);
+      Movie.find({'genre': req.params.id }, 'title description cost stock genre poster').exec(callback);
 
     }
   }, (err, results) => {

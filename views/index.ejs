@@ -15,8 +15,8 @@
               <% movies.forEach((movie) => { %>
               <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
-                  <% if(movie.image) {%>
-                  <img class="card-img-top" src="<%= movie.image %>" alt="Card image cap">
+                  <% if(movie.poster) {%>
+                  <img class="card-img-top" src="<%= movie.poster %>" alt="Card image cap">
                   <% } else { %>
                   <img class="card-img-top" src="/images/no_image.jpg" alt="Card image cap">
                   <% } %>

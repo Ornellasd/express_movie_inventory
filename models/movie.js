@@ -9,7 +9,8 @@ const MovieSchema = new Schema(
     cost: {type: Number, required: true},
     stock: {type: Number, required: true},
     genre: {type: Schema.Types.ObjectId, ref: 'Genre'},
-    image: {type: String}
+    thumbnail: {type: String},
+    poster: {type: String}
   }
 );
 

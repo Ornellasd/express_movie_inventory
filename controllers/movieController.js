@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 
 exports.index = (req, res, next) => {
 
-  Movie.find({}, 'title description cost stock genre image')
+  Movie.find({}, 'title description cost stock genre thumbnail poster')
     .populate('genre')
     .exec((err, list_movies) => {
       if (err) return next(err);
@@ -14,13 +14,14 @@ exports.index = (req, res, next) => {
       list_movies.sort((a, b) => a.title.localeCompare(b.title));
 
       // Set up carousel images, exlcluding any that are using no_image.jpg in random order
-      const carouselData = list_movies.filter(movie => movie.image !== undefined)
+      const carouselData = list_movies.filter(movie => movie.thumbnail !== undefined)
         .map((a) => ({
           sort: Math.random(),
           value: a
         }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value)
+      console.log(carouselData);
 
       res.render('index', {
         title: 'All Movies',
@@ -46,6 +47,7 @@ exports.movie_create_get = (req, res, next) => {
 
 exports.movie_create_post = (req, res, next) => {
   let genreSelection;
+  
   const MOVIEDB_KEY = process.env.MOVIEDB_KEY;
   const FANART_KEY = process.env.FANART_KEY;
   let movieTitle;
@@ -117,7 +119,10 @@ exports.movie_create_post = (req, res, next) => {
     if(req.body.apiCheck !== undefined) {
        processMovieData(req.body.movieTitle).then((response) => {
         newMovie = createNewMovie(req.body.movieTitle, movieDescription);
-        newMovie.image = response.poster;
+        newMovie.thumbnail = response.thumbnail;
+        newMovie.poster = response.poster;
+
+        console.log(newMovie);
         newMovie.save((err) => {
           if (err) return next(err);
           res.redirect(newMovie.url);
@@ -129,7 +134,7 @@ exports.movie_create_post = (req, res, next) => {
       // Image upload 
       if (req.file) {
         const imagePath = `/images/uploads/${req.file.filename}`;
-        newMovie.image = imagePath;
+        newMovie.thumbnail = imagePath;
       }
 
       newMovie.save((err) => {
@@ -244,7 +249,7 @@ exports.movie_edit_post = (req, res, next) => {
     // Image upload 
     if (req.file) {
       const imagePath = `/images/uploads/${req.file.filename}`;
-      movie.image = imagePath;
+      movie.thumbnail = imagePath;
     }
 
     //Check for password
