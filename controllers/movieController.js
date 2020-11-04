@@ -21,7 +21,6 @@ exports.index = (req, res, next) => {
         }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value)
-      console.log(carouselData);
 
       res.render('index', {
         title: 'All Movies',
@@ -47,12 +46,12 @@ exports.movie_create_get = (req, res, next) => {
 
 exports.movie_create_post = (req, res, next) => {
   let genreSelection;
-  
+
   const MOVIEDB_KEY = process.env.MOVIEDB_KEY;
   const FANART_KEY = process.env.FANART_KEY;
   let movieTitle;
   let movieDescription;
-   
+
   function grabMovieData(movie) {
     return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDB_KEY}&include_adult=false&query=${movie}`)
       .then(response => response.json())
@@ -60,22 +59,28 @@ exports.movie_create_post = (req, res, next) => {
         movieTitle = data.results[0].title;
         movieDescription = data.results[0].overview;
         return fetch(`http://webservice.fanart.tv/v3/movies/${data.results[0].id}?api_key=${FANART_KEY}`)
-    });
+      });
   }
-   
+
   const processMovieData = async (movie) => {
-    const movieData = await grabMovieData(movie);
-    const response = await movieData.json();
     try {
+      const movieData = await grabMovieData(movie);
+      const response = await movieData.json();
       const thumbnail = await response.moviethumb.filter(thumb => thumb.lang == 'en')[0].url;
       const poster = await response.movieposter.filter(poster => poster.lang == 'en')[0].url;
       const artwork = {
         'thumbnail': thumbnail,
         'poster': poster
       };
-      return artwork;  
-    } catch(err) {
-      console.log('Error finding artwork!');
+      return artwork;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        res.render('error', {
+          title: 'Error',
+          message: 'Error retrieving movie data',
+          error: error,
+        });
+      }
     }
   }
 
@@ -89,7 +94,7 @@ exports.movie_create_post = (req, res, next) => {
     },
   }, (err, results) => {
     if (err) return next(err);
-    
+
     if (req.body.otherGenre.length == 0) {
       genreSelection = req.body.selectedGenre;
     } else if (results.genre && req.body.otherGenre.length >= 1) {
@@ -103,7 +108,7 @@ exports.movie_create_post = (req, res, next) => {
       newGenre.save(err => next(err));
       genreSelection = newGenre._id
     }
-  
+
     function createNewMovie(title, description) {
       const movie = new Movie({
         title: title,
@@ -116,13 +121,12 @@ exports.movie_create_post = (req, res, next) => {
       return movie;
     }
 
-    if(req.body.apiCheck !== undefined) {
-       processMovieData(req.body.movieTitle).then((response) => {
+    if (req.body.apiCheck !== undefined) {
+      processMovieData(req.body.movieTitle).then((response) => {
         newMovie = createNewMovie(req.body.movieTitle, movieDescription);
         newMovie.thumbnail = response.thumbnail;
         newMovie.poster = response.poster;
 
-        console.log(newMovie);
         newMovie.save((err) => {
           if (err) return next(err);
           res.redirect(newMovie.url);
@@ -130,7 +134,7 @@ exports.movie_create_post = (req, res, next) => {
       });
     } else {
       newMovie = createNewMovie(req.body.movieTitle, req.body.movieDesc);
-      
+
       // Image upload 
       if (req.file) {
         const imagePath = `/images/uploads/${req.file.filename}`;
@@ -138,7 +142,7 @@ exports.movie_create_post = (req, res, next) => {
       }
 
       newMovie.save((err) => {
-      if (err) return next(err);
+        if (err) return next(err);
         res.redirect(newMovie.url);
       });
     }
